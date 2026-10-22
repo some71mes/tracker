@@ -82,6 +82,24 @@
     .danger { color: var(--bad); }
     .notice { margin-top: 14px; color: var(--muted); font-size: .85rem; }
     .empty { color: var(--muted); padding: 12px 0; }
+    /* 10 уровней цвета стрика */
+    .streak {
+      font-size: 1.35rem;
+      font-weight: 850;
+      margin-top: 4px;
+      transition: color 0.25s ease;
+    }
+    .streak.level-0  { color: #a5a2b4; }
+    .streak.level-1  { color: #fca5a5; }
+    .streak.level-2  { color: #f87171; }
+    .streak.level-3  { color: #fb923c; }
+    .streak.level-4  { color: #fdba74; }
+    .streak.level-5  { color: #60a5fa; }
+    .streak.level-6  { color: #3b82f6; }
+    .streak.level-7  { color: #818cf8; }
+    .streak.level-8  { color: #a78bfa; }
+    .streak.level-9  { color: #c084fc; }
+    .streak.level-10 { color: #e9d5ff; }
     @media (max-width: 480px) {
       body { padding: 20px 12px 36px; }
       .panel { padding: 17px; border-radius: 16px; }
@@ -161,7 +179,20 @@
     const day = String(date.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
-
+  function updateStreakDisplay(elementId, field) {
+    const count = getStreak(field);
+    const element = $(elementId);
+  
+    const level = count === 0
+      ? 0
+      : Math.min(10, Math.ceil(count / 10));
+  
+    element.textContent = count > 0
+      ? `🔥 ${formatDays(count)}`
+      : "0 дней подряд";
+  
+    element.className = `streak level-${level}`;
+  }
   function prettyDate(key) {
     const [year, month, day] = key.split("-").map(Number);
     return new Date(year, month - 1, day).toLocaleDateString("ru-RU", {
